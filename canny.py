@@ -2,14 +2,30 @@ import numpy as np
 import cv2 as cv
 
 
+def gaussian_filter(img):
+    
+
+
 def canny_edge_detector(img):
-    img = cv.imread(img, 0)
-    return img
+    smooth_img = gaussian_filter(img)
+
+    # Find intensity gradients
+
+    # Apply magnitude thresholding
+
+    # Apply double threshold
+
+    # Track edge by hysteresis
+    final_img = img
+    return final_img
 
 
 def main():
     print("Canny Edge Detection Test")
-    img = canny_edge_detector('test_image.png')
+
+    # Convert to grayscale
+    img = cv.imread('test_image_2.png', 0)
+    img = canny_edge_detector(img)
     cv.imshow('Canny Edge Detector', img)
     cv.waitKey(0)
 
