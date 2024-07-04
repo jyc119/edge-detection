@@ -24,7 +24,7 @@ def main():
     print("Canny Edge Detection Test")
 
     # Convert to grayscale
-    img = cv.imread('test_image_1.png', 0)
+    img = cv.imread('images/test_image_1.png', 0)
     img = canny_edge_detector(img)
 
     # Compare to OpenCV Canny
