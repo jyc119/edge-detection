@@ -9,18 +9,36 @@ def gaussian(img):
 
     return img_gaussian
 
-def prewitt(img):
-    Gx = [
-        [1, 1, 1],
-        [0, 0, 0],
-        [-1, -1, -1]
-    ]
-
-    Gy = [
+def sobel(img):
+    Gx = np.array([
         [1, 0, -1],
-        [1, 0, -1],
+        [2, 0, -2],
         [1, 0, -1]
-    ]
+    ])
+    Gy = np.array([
+        [1, 2, 1],
+        [0, 0, 0],
+        [-1, -2, -1]
+    ])
+
+    # Convolve with the Sobel kernels
+    edges_x = cv2.filter2D(img, -1, Gx)
+    edges_y = cv2.filter2D(img, -1, Gy)
+
+    # Calculate the magnitude of the gradients
+    magnitude = np.sqrt(edges_x ** 2 + edges_y ** 2)
+    magnitude = np.clip(magnitude, 0, 255)
+
+    cv2.imshow("Sobel X", edges_x)
+    cv2.waitKey(0)
+    cv2.imshow("Sobel Y", edges_y)
+    cv2.waitKey(0)
+    cv2.imshow("Sobel Edge Magnitude", magnitude.astype(np.uint8))
+    cv2.waitKey(0)
+
+    return magnitude
+
+
 
 def main():
     print("Sobel Edge Detection Test")
@@ -36,6 +54,7 @@ def main():
 
     # Apply gaussian blur
     img_gaussian = gaussian(gray)
+    v = sobel(img_gaussian)
 
     cv2.destroyAllWindows()
 
