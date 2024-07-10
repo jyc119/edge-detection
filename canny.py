@@ -1,6 +1,5 @@
 import numpy as np
 import cv2
-from scipy.ndimage import convolve
 import matplotlib.pyplot as plt
 
 
@@ -28,8 +27,8 @@ def gradient_intesity(img):
         [-1, -2, -1]
     ])
 
-    Ix = convolve(img, Gx)
-    Iy = convolve(img, Gy)
+    Ix = cv2.filter2D(img, -1, Gx)
+    Iy = cv2.filter2D(img, -1, Gy)
 
     G = np.hypot(Ix, Iy)
     G = G / G.max() * 255
@@ -79,25 +78,20 @@ def double_threshold(img, low, high):
     height, width = img.shape
     res = np.zeros((height, width), dtype=np.int32)
 
-    weak = np.int32(25)
-    strong = np.int32(255)
-
     strong_x, strong_y = np.where(img >= high)
-    # zeros_x, zeros_y = np.where(img < low)
     weak_x, weak_y = np.where((img <= high) & (img >= low))
 
-    res[strong_x, strong_y] = strong
-    # res[zeros_x, zeros_y] = 0
-    res[weak_x, weak_y] = weak
+    res[strong_x, strong_y] = 255
+    res[weak_x, weak_y] = 50
 
-    return res, weak, strong
+    return res
 
 
-def hysteresis(img, weak, strong=200):
+def hysteresis(img, strong=255):
     height, width = img.shape
     for x in range(1, height-1):
         for y in range(1, width-1):
-            if img[x, y] == weak:
+            if img[x, y] == 50:
                 try:
                     if ((img[x+1, y-1] == strong) or (img[x+1, y] == strong) or
                         (img[x+1, y+1] == strong) or (img[x, y-1] == strong) or
@@ -114,7 +108,7 @@ def hysteresis(img, weak, strong=200):
 def canny_edge_detector(img):
     # Apply gaussian filter (equivalent to gaussianBlur)
     gaussian_kernel = gaussian_filter_kernel(5, 1)
-    gaussian_img = convolve(img, gaussian_kernel)
+    gaussian_img = cv2.filter2D(img, -1, gaussian_kernel)
 
     # Find intensity gradients
     G, theta = gradient_intesity(gaussian_img)
@@ -123,10 +117,10 @@ def canny_edge_detector(img):
     Z = magnitude_thresholding(G, theta)
 
     # Apply double threshold
-    threshold_img, weak, strong = double_threshold(Z, 0.3, 0.45)
+    threshold_img = double_threshold(Z, 0.05, 0.15)
 
     # Track edge by hysteresis
-    final_img = hysteresis(threshold_img, weak)
+    final_img = hysteresis(threshold_img)
     return final_img
 
 
