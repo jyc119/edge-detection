@@ -9,6 +9,7 @@ def gaussian(img):
 
     return img_gaussian
 
+
 def sobel(img):
     Gx = np.array([
         [1, 0, -1],
@@ -39,7 +40,6 @@ def sobel(img):
     return magnitude
 
 
-
 def main():
     print("Sobel Edge Detection Test")
 
@@ -57,6 +57,7 @@ def main():
     v = sobel(img_gaussian)
 
     cv2.destroyAllWindows()
+
 
 if __name__ == '__main__':
     main()
