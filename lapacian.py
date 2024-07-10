@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 
+
 def gaussian(img):
     img_gaussian = cv2.GaussianBlur(img, (3, 3), 0)
     cv2.imshow("Gaussian kernel", img_gaussian)
@@ -8,8 +9,9 @@ def gaussian(img):
 
     return img_gaussian
 
+
 def main():
-    print("Laplacian Edge Detection Test")
+    print("Lapacian Edge Detection Test")
 
     img = cv2.imread('images/tomatoes.jpg')
     cv2.imshow("Original Image", img)
@@ -25,6 +27,7 @@ def main():
     # v = sobel(img_gaussian)
 
     cv2.destroyAllWindows()
+
 
 if __name__ == '__main__':
     main()
