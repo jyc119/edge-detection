@@ -3,29 +3,29 @@ import cv2
 
 def gaussian(img):
     img_gaussian = cv2.GaussianBlur(img, (3, 3), 0)
-    cv2.imshow("Gaussian kernel", img_gaussian)
+    cv2.imshow("Gaussian Blur", img_gaussian)
     cv2.waitKey(0)
-
     return img_gaussian
 
 def prewitt(img):
     # Define Prewitt kernels
     Gx = np.array([[1, 0, -1],
                    [1, 0, -1],
-                   [1, 0, -1]])
+                   [1, 0, -1]], dtype=np.float32)
 
     Gy = np.array([[1, 1, 1],
                    [0, 0, 0],
-                   [-1, -1, -1]])
+                   [-1, -1, -1]], dtype=np.float32)
 
     # Convolve with the Prewitt kernels
-    edges_x = cv2.filter2D(img, -1, Gx)
-    edges_y = cv2.filter2D(img, -1, Gy)
+    edges_x = cv2.filter2D(img, cv2.CV_32F, Gx)
+    edges_y = cv2.filter2D(img, cv2.CV_32F, Gy)
 
     # Calculate the magnitude of the gradients
-    magnitude = np.sqrt(edges_x**2 + edges_y**2)
-    magnitude = np.clip(magnitude, 0, 255)  # Clip values to stay within byte range
+    magnitude = cv2.magnitude(edges_x, edges_y)
 
+    # Normalize the magnitude to the range [0, 255]
+    magnitude = cv2.normalize(magnitude, None, 0, 255, cv2.NORM_MINMAX)
     magnitude = magnitude.astype(np.uint8)  # Convert to unsigned 8-bit integer
 
     cv2.imshow("Prewitt Edge Magnitude", magnitude)
@@ -45,7 +45,7 @@ def main():
     cv2.imshow("Grayscale Image", gray)
     cv2.waitKey(0)
 
-    # Apply gaussian blur
+    # Apply Gaussian blur
     img_gaussian = gaussian(gray)
 
     # Apply Prewitt
