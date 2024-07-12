@@ -1,6 +1,5 @@
 import numpy as np
 import cv2
-import matplotlib.pyplot as plt
 
 
 def gaussian_filter_kernel(size, sigma):
@@ -107,8 +106,9 @@ def hysteresis(img, strong=255):
 
 def canny_edge_detector(img):
     # Apply gaussian filter (equivalent to gaussianBlur)
-    gaussian_kernel = gaussian_filter_kernel(5, 1)
+    gaussian_kernel = gaussian_filter_kernel(3, 1)
     gaussian_img = cv2.filter2D(img, -1, gaussian_kernel)
+    # gaussian_img = cv2.GaussianBlur(img, (3, 3), 1)
 
     # Find intensity gradients
     G, theta = gradient_intesity(gaussian_img)
@@ -117,7 +117,7 @@ def canny_edge_detector(img):
     Z = magnitude_thresholding(G, theta)
 
     # Apply double threshold
-    threshold_img = double_threshold(Z, 0.05, 0.15)
+    threshold_img = double_threshold(Z, 0.05, 0.1)
 
     # Track edge by hysteresis
     final_img = hysteresis(threshold_img)
@@ -128,7 +128,10 @@ def main():
     print("Canny Edge Detection Test")
 
     # Convert to grayscale
-    img = cv2.imread('images/test_image_1.png', 0)
+    img = cv2.imread('images/test_image_1.png', cv2.IMREAD_GRAYSCALE)
+
+    cv2.imshow('Original Image- Grayscale', img)
+    cv2.waitKey(0)
 
     edges = canny_edge_detector(img)
     edges = np.uint8(edges)
@@ -136,8 +139,8 @@ def main():
     cv2.waitKey(0)
 
     # Compare to OpenCV Canny
-    img = cv2.Canny(img, 100, 200)
-    cv2.imshow('Canny Edge Detector', img)
+    img = cv2.Canny(img, 50, 100)
+    cv2.imshow('OpenCV Canny Edge Detector', img)
     cv2.waitKey(0)
 
     cv2.destroyAllWindows()
