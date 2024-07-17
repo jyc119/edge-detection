@@ -128,7 +128,7 @@ def main():
     print("Canny Edge Detection Test")
 
     # Convert to grayscale
-    img = cv2.imread('images/test_image_1.png', cv2.IMREAD_GRAYSCALE)
+    img = cv2.imread('images/tomatoes.jpg', cv2.IMREAD_GRAYSCALE)
 
     cv2.imshow('Original Image- Grayscale', img)
     cv2.waitKey(0)
@@ -142,6 +142,8 @@ def main():
     img = cv2.Canny(img, 50, 100)
     cv2.imshow('OpenCV Canny Edge Detector', img)
     cv2.waitKey(0)
+
+    img = cv2.Sobel()
 
     cv2.destroyAllWindows()
 
