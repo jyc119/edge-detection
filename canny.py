@@ -143,8 +143,6 @@ def main():
     cv2.imshow('OpenCV Canny Edge Detector', img)
     cv2.waitKey(0)
 
-    img = cv2.Sobel()
-
     cv2.destroyAllWindows()
 
 
