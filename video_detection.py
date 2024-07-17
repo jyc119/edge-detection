@@ -1,6 +1,19 @@
 import cv2
 import canny
+import sobel
+import prewitt
 import numpy as np
+
+def opencv_prewitt(img):
+    img_gaussian = cv2.GaussianBlur(img, (3, 3), 0)
+
+    # prewitt
+    kernelx = np.array([[1, 1, 1], [0, 0, 0], [-1, -1, -1]])
+    kernely = np.array([[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]])
+    img_prewittx = cv2.filter2D(img_gaussian, -1, kernelx)
+    img_prewitty = cv2.filter2D(img_gaussian, -1, kernely)
+
+    return img_prewittx + img_prewitty
 
 
 def run_detection(video_path, detection_algorithm):
@@ -17,19 +30,17 @@ def run_detection(video_path, detection_algorithm):
             print("End of video")
             break
 
-        fps = capture.get(cv2.CAP_PROP_FPS)
-        frame = cv2.resize(frame, (640, 360))
-
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         # edges = canny.canny_edge_detector(gray_frame)
-        edges = cv2.Canny(gray_frame, 50, 100)
+        edges = opencv_prewitt(gray_frame)
+        # edges = cv2.Canny(gray_frame, 50, 100)
         edges = np.uint8(edges)
 
         combined = cv2.hconcat([frame, cv2.cvtColor(edges, cv2.COLOR_GRAY2BGR)])
 
         cv2.imshow('Original and Edges', combined)
 
-        if cv2.waitKey(int(1000 / fps)) & 0xFF == ord('q'):
+        if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
             # Release the capture and close windows
