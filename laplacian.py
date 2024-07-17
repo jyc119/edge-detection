@@ -11,9 +11,9 @@ def gaussian(img):
 
 def laplacian(img):
     # Define Laplacian kernel (3x3)
-    kernel = np.array([[0, -1, 0],
-                       [-1, 4, -1],
-                       [0, -1, 0]])
+    kernel = np.array([[1, 4, 1],
+                       [4, -20, 4],
+                       [1, 4, 1]])
 
     # Convolve with the Laplacian kernel
     edges = cv2.filter2D(img, -1, kernel)
