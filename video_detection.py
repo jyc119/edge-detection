@@ -18,7 +18,7 @@ def opencv_prewitt(img):
 
 def define_region_of_interest(img, vertices):
     mask = np.zeros_like(img)
-    cv2.fillPoly(mask, vertices, 255)
+    cv2.fillPoly(mask, vertices, (255, 0, 0))
     masked = cv2.bitwise_and(img, mask)
     return masked
 
@@ -41,12 +41,12 @@ def run_detection(video_path, detection_algorithm):
         # edges = np.uint8(edges)
 
         h, w = edges.shape
-        vertices = [(0, h), (w/2, h/2), (w, h)]
-        # define_region_of_interest(edges, np.array([vertices]))
+        vertices = [(0, h), (w/2, 2*h/3), (w, h)]
+        roi = define_region_of_interest(edges, np.array([vertices], np.int32))
 
-        combined = cv2.hconcat([frame, cv2.cvtColor(edges, cv2.COLOR_GRAY2BGR)])
+        # combined = cv2.hconcat([frame, cv2.cvtColor(edges, cv2.COLOR_GRAY2BGR)])
 
-        cv2.imshow('Original and Edges', combined)
+        cv2.imshow('Original and Edges', roi)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
