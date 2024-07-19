@@ -16,14 +16,17 @@ def opencv_prewitt(img):
     return img_prewittx + img_prewitty
 
 
+def define_region_of_interest(img, vertices):
+    mask = np.zeros_like(img)
+    cv2.fillPoly(mask, vertices, 255)
+    masked = cv2.bitwise_and(img, mask)
+    return masked
+
+
 def run_detection(video_path, detection_algorithm):
     capture = cv2.VideoCapture(video_path)
 
-    if not capture.isOpened():
-        print(f"Error: Could not open video file {video_path}.")
-        return
-
-    while True:
+    while capture.isOpened():
         ret, frame = capture.read()
 
         if not ret:
@@ -31,10 +34,15 @@ def run_detection(video_path, detection_algorithm):
             break
 
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        blur = cv2.GaussianBlur(gray_frame, (5, 5), 0)
         # edges = canny.canny_edge_detector(gray_frame)
-        edges = opencv_prewitt(gray_frame)
-        # edges = cv2.Canny(gray_frame, 50, 100)
-        edges = np.uint8(edges)
+        # edges = opencv_prewitt(gray_frame)
+        edges = cv2.Canny(blur, 50, 100)
+        # edges = np.uint8(edges)
+
+        h, w = edges.shape
+        vertices = [(0, h), (w/2, h/2), (w, h)]
+        # define_region_of_interest(edges, np.array([vertices]))
 
         combined = cv2.hconcat([frame, cv2.cvtColor(edges, cv2.COLOR_GRAY2BGR)])
 
