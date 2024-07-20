@@ -1,5 +1,14 @@
 import numpy as np
 import cv2
+from evaluation import evaluate_metrics
+
+def opencv_sobel(g):
+    # sobel
+    img_sobelx = cv2.Sobel(g, cv2.CV_8U, 1, 0, ksize=5)
+    img_sobely = cv2.Sobel(g, cv2.CV_8U, 0, 1, ksize=5)
+    img_sobel = img_sobelx + img_sobely
+
+    return img_sobel
 
 def gaussian(img):
     img_gaussian = cv2.GaussianBlur(img, (3, 3), 0)
@@ -50,6 +59,12 @@ def main():
 
     # Apply Sobel
     edges_sobel = sobel(img_gaussian)
+    ground_truth = opencv_sobel(img_gaussian)
+    precision, recall, f1, roc_auc = evaluate_metrics(ground_truth, edges_sobel)
+    print(f"Precision: {precision}")
+    print(f"Recall: {recall}")
+    print(f"F1 Score: {f1}")
+    print(f"ROC AUC: {roc_auc}")
 
     cv2.destroyAllWindows()
 

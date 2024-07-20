@@ -1,6 +1,24 @@
 import numpy as np
 import cv2
+from evaluation import evaluate_metrics
 
+def opencv_laplacian(img):
+    # Apply the Laplacian operator
+    laplacian = cv2.Laplacian(img, cv2.CV_64F)
+
+    # Take the absolute value of the Laplacian to avoid negative values
+    laplacian = np.abs(laplacian)
+
+    # Normalize the result to the range [0, 255]
+    laplacian = cv2.normalize(laplacian, None, 0, 255, cv2.NORM_MINMAX)
+
+    # Convert to unsigned 8-bit integer format
+    laplacian = laplacian.astype(np.uint8)
+
+    cv2.imshow("Laplacian Edge Detection", laplacian)
+    cv2.waitKey(0)
+
+    return laplacian
 
 def gaussian(img):
     img_gaussian = cv2.GaussianBlur(img, (3, 3), 0)
@@ -46,6 +64,12 @@ def main():
 
     # Apply Laplacian
     edges_laplacian = laplacian(img_gaussian)
+    ground_truth = opencv_laplacian(img)
+    precision, recall, f1, roc_auc = evaluate_metrics(ground_truth, edges_laplacian)
+    print(f"Precision: {precision}")
+    print(f"Recall: {recall}")
+    print(f"F1 Score: {f1}")
+    print(f"ROC AUC: {roc_auc}")
 
     cv2.destroyAllWindows()
 
