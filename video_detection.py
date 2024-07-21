@@ -23,6 +23,14 @@ def define_region_of_interest(img, vertices):
     return masked
 
 
+def draw_lane_lines(img, lines):
+    if lines is None:
+        return
+    for line in lines:
+        for x1, y1, x2, y2 in line:
+            cv2.line(img, (x1, y1), (x2, y2), (0, 255, 0), 5)
+
+
 def run_detection(video_path, detection_algorithm):
     capture = cv2.VideoCapture(video_path)
 
@@ -44,9 +52,16 @@ def run_detection(video_path, detection_algorithm):
         vertices = [(0, h), (w/2, 2*h/3), (w, h)]
         roi = define_region_of_interest(edges, np.array([vertices], np.int32))
 
-        # combined = cv2.hconcat([frame, cv2.cvtColor(edges, cv2.COLOR_GRAY2BGR)])
+        lines = cv2.HoughLinesP(roi, 1, np.pi / 180, 50, minLineLength=50,
+                                maxLineGap=150)
+        line_image = np.zeros_like(frame)
+        draw_lane_lines(line_image, lines)
 
-        cv2.imshow('Original and Edges', roi)
+        combo_image = cv2.addWeighted(frame, 0.8, line_image, 1, 0.0)
+
+        combined = cv2.hconcat([frame, cv2.cvtColor(roi, cv2.COLOR_GRAY2BGR)])
+
+        cv2.imshow('Lane Lines', combo_image)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
