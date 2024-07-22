@@ -43,10 +43,11 @@ def run_detection(video_path, detection_algorithm):
 
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         blur = cv2.GaussianBlur(gray_frame, (5, 5), 0)
-        # edges = canny.canny_edge_detector(gray_frame)
-        # edges = opencv_prewitt(gray_frame)
+
+        # Our implementation is too slow for some reason
+        # edges = canny.canny_edge_detector(blur)
         edges = cv2.Canny(blur, 50, 100)
-        # edges = np.uint8(edges)
+        edges = np.uint8(edges)
 
         h, w = edges.shape
         vertices = [(0, h), (w/2, 2*h/3), (w, h)]
@@ -66,13 +67,12 @@ def run_detection(video_path, detection_algorithm):
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
-            # Release the capture and close windows
     capture.release()
     cv2.destroyAllWindows()
 
 
 def main():
-    video = 'videos/lane_test.mp4'
+    video = 'videos/lane_test_2.mp4'
     run_detection(video, 'canny')
 
 
