@@ -4,17 +4,6 @@ import sobel
 import prewitt
 import numpy as np
 
-def opencv_prewitt(img):
-    img_gaussian = cv2.GaussianBlur(img, (3, 3), 0)
-
-    # prewitt
-    kernelx = np.array([[1, 1, 1], [0, 0, 0], [-1, -1, -1]])
-    kernely = np.array([[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]])
-    img_prewittx = cv2.filter2D(img_gaussian, -1, kernelx)
-    img_prewitty = cv2.filter2D(img_gaussian, -1, kernely)
-
-    return img_prewittx + img_prewitty
-
 
 def define_region_of_interest(img, vertices):
     mask = np.zeros_like(img)

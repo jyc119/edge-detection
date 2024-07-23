@@ -7,6 +7,28 @@ import time
 # Compare the algorithms times
 
 
+def opencv_prewitt(img):
+    img_gaussian = cv2.GaussianBlur(img, (5, 5), 0)
+
+    # prewitt
+    kernelx = np.array([[1, 1, 1], [0, 0, 0], [-1, -1, -1]])
+    kernely = np.array([[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]])
+    img_prewittx = cv2.filter2D(img_gaussian, -1, kernelx)
+    img_prewitty = cv2.filter2D(img_gaussian, -1, kernely)
+
+    return img_prewittx + img_prewitty
+
+
+def opencv_sobel(g):
+    g = cv2.GaussianBlur(g, (5, 5), 0)
+
+    img_sobelx = cv2.Sobel(g, cv2.CV_8U, 1, 0, ksize=5)
+    img_sobely = cv2.Sobel(g, cv2.CV_8U, 0, 1, ksize=5)
+    img_sobel = img_sobelx + img_sobely
+
+    return img_sobel
+
+
 def display_results(times):
     print("temp")
 
@@ -16,21 +38,28 @@ def main():
     for i in range(4):
         times = []
         if i == 0:
-            for _ in range(100):
+            for _ in range(100000):
                 start = time.time_ns()
                 img = cv2.GaussianBlur(img, (5, 5), 0)
                 cv2.Canny(img, 50, 100)
                 end = time.time_ns()
                 times.append(end-start)
         if i == 1:
-            print("Sobel OpenCV")
-            times.append(1)
+            start = time.time_ns()
+            img = opencv_sobel(img)
+            end = time.time_ns()
+            times.append(end-start)
         if i == 2:
-            print("Prewitt")
-            times.append(1)
+            start = time.time_ns()
+            img = opencv_prewitt(img)
+            end = time.time_ns()
+            times.append(end-start)
         if i == 3:
-            print("Laplacian")
-            times.append(1)
+            start = time.time_ns()
+            img = cv2.GaussianBlur(img, (5, 5), 0)
+            img = cv2.Laplacian(img, cv2.CV_64F)
+            end = time.time_ns()
+            times.append(end-start)
 
         avg = np.average(times)
         averages.append(avg)
