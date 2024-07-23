@@ -31,7 +31,7 @@ def draw_lane_lines(img, lines):
             cv2.line(img, (x1, y1), (x2, y2), (0, 255, 0), 5)
 
 
-def run_detection(video_path, detection_algorithm):
+def run_detection(video_path):
     capture = cv2.VideoCapture(video_path)
 
     while capture.isOpened():
@@ -50,8 +50,8 @@ def run_detection(video_path, detection_algorithm):
         edges = np.uint8(edges)
 
         h, w = edges.shape
-        vertices = [(0, h), (w/2, 2*h/3), (w, h)]
-        roi = define_region_of_interest(edges, np.array([vertices], np.int32))
+        vertices = np.array([[(0, h), (w/2, 2*h/3), (w, h)]], np.int32)
+        roi = define_region_of_interest(edges, vertices)
 
         lines = cv2.HoughLinesP(roi, 1, np.pi / 180, 50, minLineLength=50,
                                 maxLineGap=150)
@@ -60,9 +60,7 @@ def run_detection(video_path, detection_algorithm):
 
         combo_image = cv2.addWeighted(frame, 0.8, line_image, 1, 0.0)
 
-        combined = cv2.hconcat([frame, cv2.cvtColor(roi, cv2.COLOR_GRAY2BGR)])
-
-        cv2.imshow('Lane Lines', combo_image)
+        cv2.imshow('Lane Lines Using Canny Edge Detection', combo_image)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
@@ -73,7 +71,7 @@ def run_detection(video_path, detection_algorithm):
 
 def main():
     video = 'videos/lane_test_2.mp4'
-    run_detection(video, 'canny')
+    run_detection(video,)
 
 
 if __name__ == "__main__":
