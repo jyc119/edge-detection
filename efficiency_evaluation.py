@@ -30,8 +30,8 @@ def opencv_sobel(g):
 
 
 def display_results(times):
-    for t in times:
-        t = t * 1000
+    for i in range(len(times)):
+        times[i] = times[i] * 1000
     labels = ['Canny', 'Sobel', 'Prewitt', 'Laplacian']
     left = [1, 2, 3, 4]
 
