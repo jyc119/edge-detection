@@ -1,5 +1,5 @@
 import numpy as np
-import canny
+import matplotlib.pyplot as plt
 import cv2
 import time
 
@@ -30,7 +30,20 @@ def opencv_sobel(g):
 
 
 def display_results(times):
-    print("temp")
+    for t in times:
+        t = t * 1000
+    labels = ['Canny', 'Sobel', 'Prewitt', 'Laplacian']
+    left = [1, 2, 3, 4]
+
+    plt.bar(left, times, tick_label=labels, width=0.8)
+
+    plt.xlabel('Edge Detection Algorithm')
+    plt.ylabel('Runtime (ms)')
+    plt.title('Average Runtime to Detect Edges on 100 Images')
+
+    plt.savefig('efficiency_evaluation.png')
+    plt.show()
+
 
 def main():
     img = cv2.imread('images/tomatoes.jpg', cv2.IMREAD_GRAYSCALE)
@@ -39,26 +52,26 @@ def main():
         times = []
         if i == 0:
             for _ in range(100000):
-                start = time.time_ns()
+                start = time.time()
                 img = cv2.GaussianBlur(img, (5, 5), 0)
                 cv2.Canny(img, 50, 100)
-                end = time.time_ns()
+                end = time.time()
                 times.append(end-start)
         if i == 1:
-            start = time.time_ns()
+            start = time.time()
             img = opencv_sobel(img)
-            end = time.time_ns()
+            end = time.time()
             times.append(end-start)
         if i == 2:
-            start = time.time_ns()
+            start = time.time()
             img = opencv_prewitt(img)
-            end = time.time_ns()
+            end = time.time()
             times.append(end-start)
         if i == 3:
-            start = time.time_ns()
+            start = time.time()
             img = cv2.GaussianBlur(img, (5, 5), 0)
             img = cv2.Laplacian(img, cv2.CV_64F)
-            end = time.time_ns()
+            end = time.time()
             times.append(end-start)
 
         avg = np.average(times)
