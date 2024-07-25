@@ -9,8 +9,8 @@ def opencv_prewitt(g):
     kernely = np.array([[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]])
     img_prewittx = cv2.filter2D(g, -1, kernelx)
     img_prewitty = cv2.filter2D(g, -1, kernely)
-
-    return img_prewittx + img_prewitty
+    magnitude = cv2.magnitude(img_prewittx.astype(np.float32), img_prewitty.astype(np.float32))
+    return cv2.normalize(magnitude, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
 
 def gaussian(img):
     img_gaussian = cv2.GaussianBlur(img, (3, 3), 0)

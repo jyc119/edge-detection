@@ -3,12 +3,12 @@ import cv2
 from evaluation import evaluate_metrics
 
 def opencv_sobel(g):
-    # sobel
-    img_sobelx = cv2.Sobel(g, cv2.CV_8U, 1, 0, ksize=5)
-    img_sobely = cv2.Sobel(g, cv2.CV_8U, 0, 1, ksize=5)
-    img_sobel = img_sobelx + img_sobely
-
-    return img_sobel
+    # Sobel
+    img_sobelx = cv2.Sobel(g, cv2.CV_64F, 1, 0, ksize=5)
+    img_sobely = cv2.Sobel(g, cv2.CV_64F, 0, 1, ksize=5)
+    magnitude = cv2.magnitude(img_sobelx, img_sobely)
+    sobel = cv2.normalize(magnitude, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+    return sobel
 
 def gaussian(img):
     img_gaussian = cv2.GaussianBlur(img, (3, 3), 0)

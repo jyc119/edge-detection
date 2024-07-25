@@ -34,11 +34,12 @@ def laplacian(img):
                        [1, 4, 1]])
 
     # Convolve with the Laplacian kernel
-    edges = cv2.filter2D(img, -1, kernel)
+    edges = cv2.filter2D(img, cv2.CV_32F, kernel)
 
     # Taking absolute value of the result
     edges = np.abs(edges)
-    edges = np.clip(edges, 0, 255)  # Clip values to stay within byte range
+    # Normalize the result to the range [0, 255]
+    edges = cv2.normalize(edges, None, 0, 255, cv2.NORM_MINMAX)
     edges = edges.astype(np.uint8)  # Convert to unsigned 8-bit integer
 
     cv2.imshow("Laplacian Edge Detection", edges)
@@ -64,7 +65,7 @@ def main():
 
     # Apply Laplacian
     edges_laplacian = laplacian(img_gaussian)
-    ground_truth = opencv_laplacian(img)
+    ground_truth = opencv_laplacian(img_gaussian)
     precision, recall, f1, roc_auc = evaluate_metrics(ground_truth, edges_laplacian)
     print(f"Precision: {precision}")
     print(f"Recall: {recall}")
