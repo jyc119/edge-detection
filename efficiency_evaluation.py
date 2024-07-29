@@ -3,14 +3,10 @@ import matplotlib.pyplot as plt
 import cv2
 import time
 
-# Run each algorithm on an image a number of times and average the time it takes
-# Compare the algorithms times
-
 
 def opencv_prewitt(img):
     img_gaussian = cv2.GaussianBlur(img, (5, 5), 0)
 
-    # prewitt
     kernelx = np.array([[1, 1, 1], [0, 0, 0], [-1, -1, -1]])
     kernely = np.array([[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]])
     img_prewittx = cv2.filter2D(img_gaussian, -1, kernelx)
