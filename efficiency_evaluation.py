@@ -35,7 +35,7 @@ def display_results(times):
 
     plt.xlabel('Edge Detection Algorithm')
     plt.ylabel('Runtime (ms)')
-    plt.title('Average Runtime to Detect Edges on 100 Images')
+    plt.title('Average Runtime to Detect Edges on 100,000 Images')
 
     plt.savefig('efficiency_evaluation.png')
     plt.show()
