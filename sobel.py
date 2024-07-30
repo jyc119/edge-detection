@@ -52,10 +52,12 @@ def main():
     # Convert to grayscale
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     cv2.imshow("Grayscale Image", gray)
+    cv2.imwrite("grayscale.png", gray)
     cv2.waitKey(0)
 
     # Apply Gaussian blur
     img_gaussian = gaussian(gray)
+    cv2.imwrite("gaussian_blur.png", img_gaussian)
 
     # Apply Sobel
     edges_sobel = sobel(img_gaussian)
