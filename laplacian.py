@@ -65,7 +65,9 @@ def main():
 
     # Apply Laplacian
     edges_laplacian = laplacian(img_gaussian)
+    cv2.imwrite("laplacian_scratch.png", edges_laplacian)
     ground_truth = opencv_laplacian(img_gaussian)
+    cv2.imwrite("laplacian_opencv.png", ground_truth)
     precision, recall, f1, roc_auc = evaluate_metrics(ground_truth, edges_laplacian)
     print(f"Precision: {precision}")
     print(f"Recall: {recall}")

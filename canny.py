@@ -136,11 +136,13 @@ def main():
     edges = canny_edge_detector(img)
     edges = np.uint8(edges)
     cv2.imshow('Canny from Scratch', edges)
+    cv2.imwrite("canny_scratch.png", edges)
     cv2.waitKey(0)
 
     # Compare to OpenCV Canny
     img = cv2.Canny(img, 50, 100)
     cv2.imshow('OpenCV Canny Edge Detector', img)
+    cv2.imwrite("canny_opencv.png", img)
     cv2.waitKey(0)
 
     cv2.destroyAllWindows()

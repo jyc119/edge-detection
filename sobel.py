@@ -59,7 +59,9 @@ def main():
 
     # Apply Sobel
     edges_sobel = sobel(img_gaussian)
+    cv2.imwrite("sobel_scratch.png", edges_sobel)
     ground_truth = opencv_sobel(img_gaussian)
+    cv2.imwrite("sobel_opencv.png", ground_truth)
     precision, recall, f1, roc_auc = evaluate_metrics(ground_truth, edges_sobel)
     print(f"Precision: {precision}")
     print(f"Recall: {recall}")
