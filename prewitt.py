@@ -61,9 +61,9 @@ def main():
 
     # Apply Prewitt
     edges_prewitt = prewitt(img_gaussian)
-    cv2.imwrite("prewitt_scratch.png", edges_prewitt)
+    cv2.imwrite("images/prewitt_scratch.png", edges_prewitt)
     ground_truth = opencv_prewitt(img_gaussian)
-    cv2.imwrite("prewitt_opencv.png", ground_truth)
+    cv2.imwrite("images/prewitt_opencv.png", ground_truth)
     precision, recall, f1, roc_auc = evaluate_metrics(ground_truth, edges_prewitt)
     print(f"Precision: {precision}")
     print(f"Recall: {recall}")

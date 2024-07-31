@@ -52,18 +52,18 @@ def main():
     # Convert to grayscale
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     cv2.imshow("Grayscale Image", gray)
-    cv2.imwrite("grayscale.png", gray)
+    cv2.imwrite("images/grayscale.png", gray)
     cv2.waitKey(0)
 
     # Apply Gaussian blur
     img_gaussian = gaussian(gray)
-    cv2.imwrite("gaussian_blur.png", img_gaussian)
+    cv2.imwrite("images/gaussian_blur.png", img_gaussian)
 
     # Apply Sobel
     edges_sobel = sobel(img_gaussian)
-    cv2.imwrite("sobel_scratch.png", edges_sobel)
+    cv2.imwrite("images/sobel_scratch.png", edges_sobel)
     ground_truth = opencv_sobel(img_gaussian)
-    cv2.imwrite("sobel_opencv.png", ground_truth)
+    cv2.imwrite("images/sobel_opencv.png", ground_truth)
     precision, recall, f1, roc_auc = evaluate_metrics(ground_truth, edges_sobel)
     print(f"Precision: {precision}")
     print(f"Recall: {recall}")
