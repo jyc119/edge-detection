@@ -1,7 +1,4 @@
 import cv2
-import canny
-import sobel
-import prewitt
 import numpy as np
 
 
@@ -50,6 +47,8 @@ def run_detection(video_path):
         combo_image = cv2.addWeighted(frame, 0.8, line_image, 1, 0.0)
 
         cv2.imshow('Lane Lines Using Canny Edge Detection', combo_image)
+        cv2.imwrite("images/lane_detection.png", combo_image)
+        # exit(1)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
