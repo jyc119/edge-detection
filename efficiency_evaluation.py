@@ -138,6 +138,20 @@ def laplacian_scratch(img):
     return edges
 
 
+def display_canny_scratch(times):
+    labels = ['Canny']
+    left = [1]
+
+    plt.bar(left, times[0], tick_label=labels, width=0.8)
+
+    plt.xlabel('Edge Detection Algorithm')
+    plt.ylabel('Runtime (s)')
+    plt.title('Average Runtime to Detect Edges on Image')
+
+    plt.savefig('images/canny_scratch')
+    plt.show()
+
+
 def scratch_evaluation():
     img = cv2.imread('images/tomatoes.jpg', cv2.IMREAD_GRAYSCALE)
     averages = []
@@ -151,21 +165,21 @@ def scratch_evaluation():
                 end = time.time()
                 times.append(end - start)
         if i == 1:
-            for _ in range(100000):
+            for _ in range(10000):
                 start = time.time()
                 img = cv2.GaussianBlur(img, (5, 5), 0)
                 sobel_scratch(img)
                 end = time.time()
                 times.append(end - start)
         if i == 2:
-            for _ in range(100000):
+            for _ in range(10000):
                 start = time.time()
                 img = cv2.GaussianBlur(img, (5, 5), 0)
                 prewitt_scratch(img)
                 end = time.time()
                 times.append(end - start)
         if i == 3:
-            for _ in range(100000):
+            for _ in range(10000):
                 start = time.time()
                 img = cv2.GaussianBlur(img, (5, 5), 0)
                 laplacian_scratch(img)
@@ -176,6 +190,7 @@ def scratch_evaluation():
         averages.append(avg)
     print(averages)
     display_results_scratch(averages, 'images/scratch_efficiency_evaluation.png')
+    display_canny_scratch(averages)
 
 
 def main():
