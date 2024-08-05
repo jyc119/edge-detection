@@ -47,7 +47,7 @@ def run_detection(video_path):
         combo_image = cv2.addWeighted(frame, 0.8, line_image, 1, 0.0)
 
         cv2.imshow('Lane Lines Using Canny Edge Detection', combo_image)
-        cv2.imwrite("images/lane_detection.png", combo_image)
+        # cv2.imwrite("images/lane_detection.png", combo_image)
         # exit(1)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -59,7 +59,7 @@ def run_detection(video_path):
 
 def main():
     video = 'videos/lane_test_2.mp4'
-    run_detection(video,)
+    run_detection(video)
 
 
 if __name__ == "__main__":
