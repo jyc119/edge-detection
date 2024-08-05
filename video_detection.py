@@ -20,6 +20,15 @@ def draw_lane_lines(img, lines):
 def run_detection(video_path):
     capture = cv2.VideoCapture(video_path)
 
+    frame_width = int(capture.get(3))
+    frame_height = int(capture.get(4))
+
+    size = (frame_width, frame_height)
+
+    result = cv2.VideoWriter('lane_detection.avi',
+                             cv2.VideoWriter_fourcc(*'XVID'),
+                             10, size)
+
     while capture.isOpened():
         ret, frame = capture.read()
 
@@ -45,6 +54,7 @@ def run_detection(video_path):
         draw_lane_lines(line_image, lines)
 
         combo_image = cv2.addWeighted(frame, 0.8, line_image, 1, 0.0)
+        result.write(combo_image)
 
         cv2.imshow('Lane Lines Using Canny Edge Detection', combo_image)
         # cv2.imwrite("images/lane_detection.png", combo_image)
