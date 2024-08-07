@@ -25,8 +25,8 @@ def run_detection(video_path):
 
     size = (frame_width, frame_height)
 
-    result = cv2.VideoWriter('lane_detection.avi',
-                             cv2.VideoWriter_fourcc(*'XVID'),
+    result = cv2.VideoWriter('lane_detection.mp4',
+                             cv2.VideoWriter_fourcc(*'mp4v'),
                              10, size)
 
     while capture.isOpened():
